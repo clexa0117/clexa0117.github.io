@@ -5,24 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>一个无法逃避的灵魂拷问(地狱模式)</title>
   <style>
-    /* CSS：网页的化妆品 */
     body {
       text-align: center;
       font-family: '微软雅黑', sans-serif;
       margin: 0;
       padding: 0;
-      /* 保证页面满屏，方便按钮乱跑 */
       height: 100vh; 
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: #fce4ec; /* 淡淡的粉色背景 */
-      overflow: hidden; /* 防止按钮跑出去出现滚动条 */
+      background-color: #fce4ec; 
+      overflow: hidden; 
     }
 
     #question-section {
-      transition: opacity 0.5s; /* 切换结局时的淡出效果 */
+      transition: opacity 0.5s; 
     }
 
     h1 {
@@ -36,7 +34,7 @@
       justify-content: center;
       align-items: center;
       gap: 30px;
-      position: relative; /* 为“不是”按钮提供定位基准 */
+      position: relative; 
       width: 300px;
       height: 100px;
     }
@@ -56,20 +54,17 @@
       background-color: #ffd54f;
     }
 
-    /* ⭐ 地狱模式的核心 CSS ⭐ */
     #no-btn {
-      /* 初始状态是正常的，一旦鼠标碰到，JS会给它加上 position: fixed */
-      z-index: 999; /* 保证它在最上面 */
+      z-index: 999; 
     }
 
-    /* 结局区域默认是隐藏的 */
     #result-section {
       display: none; 
       text-align: center;
     }
 
     #peppa-img {
-      width: 250px; /* 设置小猪佩奇图片的大小 */
+      width: 250px; 
       height: auto;
       border-radius: 20px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -82,7 +77,6 @@
     <h1>你是猪吗？</h1>
     <div class="btn-box">
       <button id="yes-btn" onclick="sayYes()">是</button>
-      
       <button id="no-btn" onmouseover="evade()">不是</button>
     </div>
   </div>
@@ -94,40 +88,30 @@
   </div>
 
   <script>
-    // 逻辑1：当用户点击“是”时
     function sayYes() {
-      // 1. 隐藏问题区域
       document.getElementById("question-section").style.display = "none";
-      // 2. 显示结局区域
-      let result = document.getElementById("result-section");
-      result.style.display = "block";
+      document.getElementById("result-section").style.display = "block";
     }
 
-    // ⭐ 逻辑2：地狱模式核心 - 按钮逃跑魔法 ⭐
     function evade() {
       const btn = document.getElementById('no-btn');
       
-      // 1. 获取当前浏览器的可见宽度和高度（屏幕有多大）
       const maxWidth = window.innerWidth;
       const maxHeight = window.innerHeight;
 
-      // 2. 获取按钮自身的大小，防止它跑出屏幕边缘看不到了
       const btnWidth = btn.offsetWidth;
       const btnHeight = btn.offsetHeight;
 
-      // 3. 计算按钮可以安全乱跑的最大坐标范围
       const safeWidth = maxWidth - btnWidth;
       const safeHeight = maxHeight - btnHeight;
 
-      // 4. 生成随机的 X 和 Y 坐标（在安全范围内）
-      // Math.random() 生成 0~1 之间的随机小数
-      // Math.floor() 向下取整
       const randomX = Math.floor(Math.random() * safeWidth);
       const randomY = Math.floor(Math.random() * safeHeight);
 
-      // 5. 将按钮改为“固定定位 (fixed)”，并把随机坐标赋给它
-      // 这样它就会瞬间“瞬移”到屏幕的另一个角落
       btn.style.position = 'fixed';
       btn.style.left = randomX + 'px';
       btn.style.top = randomY + 'px';
     }
+  </script>
+</body>
+</html>
