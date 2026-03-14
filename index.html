@@ -2,25 +2,45 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>一个严肃的灵魂拷问</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一个无法逃避的灵魂拷问(地狱模式)</title>
   <style>
-    /* 这是 CSS（网页的化妆品），用来让文字居中、按钮变好看 */
+    /* CSS：网页的化妆品 */
     body {
       text-align: center;
       font-family: '微软雅黑', sans-serif;
-      margin-top: 150px;
+      margin: 0;
+      padding: 0;
+      /* 保证页面满屏，方便按钮乱跑 */
+      height: 100vh; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       background-color: #fce4ec; /* 淡淡的粉色背景 */
+      overflow: hidden; /* 防止按钮跑出去出现滚动条 */
     }
+
+    #question-section {
+      transition: opacity 0.5s; /* 切换结局时的淡出效果 */
+    }
+
     h1 {
       color: #333;
       font-size: 40px;
+      margin-bottom: 50px;
     }
+
     .btn-box {
       display: flex;
       justify-content: center;
-      gap: 30px; /* 两个按钮之间的间距 */
-      margin-top: 50px;
+      align-items: center;
+      gap: 30px;
+      position: relative; /* 为“不是”按钮提供定位基准 */
+      width: 300px;
+      height: 100px;
     }
+
     button {
       padding: 15px 40px;
       font-size: 24px;
@@ -29,19 +49,30 @@
       border-radius: 10px;
       background-color: #fff;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: 0.2s; /* 让按钮互换时显得稍微平滑一点 */
+      transition: background-color 0.2s;
     }
+
     button:hover {
-      background-color: #ffd54f; /* 鼠标放上去会变色 */
+      background-color: #ffd54f;
     }
-    /* 结果区域默认是隐藏的（display: none） */
+
+    /* ⭐ 地狱模式的核心 CSS ⭐ */
+    #no-btn {
+      /* 初始状态是正常的，一旦鼠标碰到，JS会给它加上 position: fixed */
+      z-index: 999; /* 保证它在最上面 */
+    }
+
+    /* 结局区域默认是隐藏的 */
     #result-section {
       display: none; 
-      margin-top: 50px;
+      text-align: center;
     }
-    .pig-emoji {
-      font-size: 120px; /* 用一个巨大的猪猪表情包代替图片，保证100%能显示 */
-      margin: 0;
+
+    #peppa-img {
+      width: 250px; /* 设置小猪佩奇图片的大小 */
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -49,34 +80,54 @@
 
   <div id="question-section">
     <h1>你是猪吗？</h1>
-    <div class="btn-box" id="button-box">
-      <button onclick="sayYes()">是</button>
-      <button onclick="swapButtons()">不是</button>
+    <div class="btn-box">
+      <button id="yes-btn" onclick="sayYes()">是</button>
+      
+      <button id="no-btn" onmouseover="evade()">不是</button>
     </div>
   </div>
 
   <div id="result-section">
-    <p class="pig-emoji">🐷</p>
-    <h1>你好👋，小猪佩奇！</h1>
+    <img id="peppa-img" src="https://i.imgur.com/G5YmH8w.png" alt="小猪佩奇">
+    <br><br>
+    <h1>你好👋，小猪佩奇。</h1>
   </div>
 
   <script>
-    // 魔法 1：当用户点击“不是”时运行这段逻辑
-    function swapButtons() {
-      // 找到装按钮的那个盒子
-      let box = document.getElementById("button-box");
-      // 把盒子里的第一个按钮，强行排到最后面去，这样在视觉上它们就互换位置了！
-      box.appendChild(box.children[0]);
-    }
-
-    // 魔法 2：当用户绝望地点击“是”时运行这段逻辑
+    // 逻辑1：当用户点击“是”时
     function sayYes() {
-      // 把问题区域隐藏起来
+      // 1. 隐藏问题区域
       document.getElementById("question-section").style.display = "none";
-      // 把结局区域显示出来
-      document.getElementById("result-section").style.display = "block";
+      // 2. 显示结局区域
+      let result = document.getElementById("result-section");
+      result.style.display = "block";
     }
-  </script>
 
-</body>
-</html>
+    // ⭐ 逻辑2：地狱模式核心 - 按钮逃跑魔法 ⭐
+    function evade() {
+      const btn = document.getElementById('no-btn');
+      
+      // 1. 获取当前浏览器的可见宽度和高度（屏幕有多大）
+      const maxWidth = window.innerWidth;
+      const maxHeight = window.innerHeight;
+
+      // 2. 获取按钮自身的大小，防止它跑出屏幕边缘看不到了
+      const btnWidth = btn.offsetWidth;
+      const btnHeight = btn.offsetHeight;
+
+      // 3. 计算按钮可以安全乱跑的最大坐标范围
+      const safeWidth = maxWidth - btnWidth;
+      const safeHeight = maxHeight - btnHeight;
+
+      // 4. 生成随机的 X 和 Y 坐标（在安全范围内）
+      // Math.random() 生成 0~1 之间的随机小数
+      // Math.floor() 向下取整
+      const randomX = Math.floor(Math.random() * safeWidth);
+      const randomY = Math.floor(Math.random() * safeHeight);
+
+      // 5. 将按钮改为“固定定位 (fixed)”，并把随机坐标赋给它
+      // 这样它就会瞬间“瞬移”到屏幕的另一个角落
+      btn.style.position = 'fixed';
+      btn.style.left = randomX + 'px';
+      btn.style.top = randomY + 'px';
+    }
