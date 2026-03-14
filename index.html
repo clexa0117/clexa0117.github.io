@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>我的第一个网站</title>
-  </head>
-  <body>
-    <h1>你好，世界！</h1>
-  </body>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>一个严肃的灵魂拷问</title>
+  <style>
+    /* 这是 CSS（网页的化妆品），用来让文字居中、按钮变好看 */
+    body {
+      text-align: center;
+      font-family: '微软雅黑', sans-serif;
+      margin-top: 150px;
+      background-color: #fce4ec; /* 淡淡的粉色背景 */
+    }
+    h1 {
+      color: #333;
+      font-size: 40px;
+    }
+    .btn-box {
+      display: flex;
+      justify-content: center;
+      gap: 30px; /* 两个按钮之间的间距 */
+      margin-top: 50px;
+    }
+    button {
+      padding: 15px 40px;
+      font-size: 24px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: 0.2s; /* 让按钮互换时显得稍微平滑一点 */
+    }
+    button:hover {
+      background-color: #ffd54f; /* 鼠标放上去会变色 */
+    }
+    /* 结果区域默认是隐藏的（display: none） */
+    #result-section {
+      display: none; 
+      margin-top: 50px;
+    }
+    .pig-emoji {
+      font-size: 120px; /* 用一个巨大的猪猪表情包代替图片，保证100%能显示 */
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="question-section">
+    <h1>你是猪吗？</h1>
+    <div class="btn-box" id="button-box">
+      <button onclick="sayYes()">是</button>
+      <button onclick="swapButtons()">不是</button>
+    </div>
+  </div>
+
+  <div id="result-section">
+    <p class="pig-emoji">🐷</p>
+    <h1>你好👋，小猪佩奇！</h1>
+  </div>
+
+  <script>
+    // 魔法 1：当用户点击“不是”时运行这段逻辑
+    function swapButtons() {
+      // 找到装按钮的那个盒子
+      let box = document.getElementById("button-box");
+      // 把盒子里的第一个按钮，强行排到最后面去，这样在视觉上它们就互换位置了！
+      box.appendChild(box.children[0]);
+    }
+
+    // 魔法 2：当用户绝望地点击“是”时运行这段逻辑
+    function sayYes() {
+      // 把问题区域隐藏起来
+      document.getElementById("question-section").style.display = "none";
+      // 把结局区域显示出来
+      document.getElementById("result-section").style.display = "block";
+    }
+  </script>
+
+</body>
 </html>
